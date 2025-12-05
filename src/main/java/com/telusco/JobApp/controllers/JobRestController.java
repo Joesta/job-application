@@ -2,6 +2,7 @@ package com.telusco.JobApp.controllers;
 
 import com.telusco.JobApp.model.JobPost;
 import com.telusco.JobApp.service.JobService;
+import jdk.jfr.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class JobRestController {
 
-    @Autowired private JobService jobService;
+    private JobService jobService;
+
+    @Autowired
+    public void setJobService(JobService jobService) {
+        this.jobService = jobService;
+    }
 
     @GetMapping("jobPosts")
     public List<JobPost> getAllJobs() {
@@ -51,6 +57,17 @@ public class JobRestController {
     public JobPost deleteJob(@RequestBody JobPost jobpost) {
         System.out.println("deleteJob: running");
         return jobService.deleteJob(jobpost);
+    }
+
+    @DeleteMapping("jobPost/{id}")
+    public String deleteJobById(@PathVariable Integer id) {
+        System.out.println("deleteJobById: running");
+//        JobPost jobPost = jobService.getJobById(id);
+//        jobService.deleteJob(jobPost);
+        // OR
+        jobService.deleteJobById(id);
+
+        return "Deleted";
     }
 
 }

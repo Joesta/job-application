@@ -37,4 +37,8 @@ public class JobService {
     public JobPost deleteJob(JobPost jobpost) {
         return repo.deleteJob(jobpost);
     }
+
+    public void deleteJobById(Integer id) {
+        repo.deleteJobById(id);
+    }
 }

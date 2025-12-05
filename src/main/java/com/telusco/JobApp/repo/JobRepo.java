@@ -59,6 +59,7 @@ public class JobRepo {
     public JobPost updateJob(JobPost job) {
         JobPost oldJob = getJobById(job.getPostId());
         int index = jobs.indexOf(oldJob);
+        // Or we can use setters to set the values
         jobs.set(index, job);
 
         return getAllJobs().get(index);
@@ -68,5 +69,10 @@ public class JobRepo {
         JobPost oldJob = getJobById(jobpost.getPostId());
         boolean isRemoved = jobs.remove(oldJob);
         return isRemoved ? oldJob : null;
+    }
+
+    public void deleteJobById(Integer id) {
+        JobPost oldJob = getJobById(id);
+        jobs.remove(oldJob);
     }
 }
