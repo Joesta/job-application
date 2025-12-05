@@ -34,7 +34,7 @@ public class JobRestController {
     }
 
     @GetMapping("jobPost/{id}")
-    public JobPost getJobById(@PathVariable(name = "id") Integer jobId) {
+    public JobPost getJobById(@PathVariable(name = "id") Long jobId) {
         System.out.println("getJobById: running: id = " + jobId);
         return jobService.getJobById(jobId);
     }
@@ -56,18 +56,27 @@ public class JobRestController {
     @DeleteMapping("jobPost")
     public JobPost deleteJob(@RequestBody JobPost jobpost) {
         System.out.println("deleteJob: running");
-        return jobService.deleteJob(jobpost);
+         jobService.deleteJob(jobpost);
+         return jobService.getJobById(jobpost.getPostId());
     }
 
     @DeleteMapping("jobPost/{id}")
-    public String deleteJobById(@PathVariable Integer id) {
+    public String deleteJobById(@PathVariable Long id) {
         System.out.println("deleteJobById: running");
-//        JobPost jobPost = jobService.getJobById(id);
-//        jobService.deleteJob(jobPost);
-        // OR
         jobService.deleteJobById(id);
 
         return "Deleted";
+    }
+    
+    @GetMapping("jobPosts/keyword/{keyword}")
+    public List<JobPost> searchByKeyword(@PathVariable String keyword) {
+        System.out.println("searchByKeyword: running " + keyword);
+        return jobService.findByPostProfile(keyword);
+    }
+
+    @GetMapping("/loadJobs")
+    public void saveData() {
+        jobService.loadData();
     }
 
 }
