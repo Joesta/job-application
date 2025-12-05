@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JobRepo {
@@ -46,5 +47,26 @@ public class JobRepo {
 
     }
 
+    public JobPost getJobById(Integer jobId) {
+        Optional<JobPost> oldJob = getAllJobs()
+                .stream()
+                .filter(currentJob -> currentJob.getPostId() == jobId)
+                .findFirst();
 
+        return oldJob.orElse(null);
+    }
+
+    public JobPost updateJob(JobPost job) {
+        JobPost oldJob = getJobById(job.getPostId());
+        int index = jobs.indexOf(oldJob);
+        jobs.set(index, job);
+
+        return getAllJobs().get(index);
+    }
+
+    public JobPost deleteJob(JobPost jobpost) {
+        JobPost oldJob = getJobById(jobpost.getPostId());
+        boolean isRemoved = jobs.remove(oldJob);
+        return isRemoved ? oldJob : null;
+    }
 }
